@@ -1,0 +1,375 @@
+.container {
+    max-width: 1300px;
+    margin: 0 auto;
+}
+
+.grid-container {
+    display: grid;
+    max-width: 100%;
+    background-color: '#DBDhBDB';
+    margin: 100px 10px;;
+    max-width: 1200px;
+    grid-gap: 80px 50px;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+
+    
+}
+
+.card {
+    
+    background-color: #fff;
+    /*width: 420px;*/
+    min-height: 250px;
+     
+    box-shadow: 0 2px 20px 0 rgba(0,0,0,0.05);
+    
+    display: flex;
+    flex-direction: row;
+    -webkit-transition:  box-shadow .7s ease-out;
+    border: 1px solid #f0f0f0;
+    border-top:4px solid rgba(255,185,0,1);
+
+
+}
+
+.card:hover{ 
+     box-shadow: 1px 8px 20px #E7e7e7;
+    -webkit-transition:  box-shadow .3s ease-out;
+}
+
+/*------------left side of card----------*/
+
+.card-left {
+    margin:0px 0px 0 15px;
+    width:150px;
+    height: 211px;
+}
+
+.details {
+    display: flex;
+    margin-top: 3px;
+    justify-content: space-between;
+}
+
+.date {
+    font-family: 'Lato', sans-serif;
+    font-size: 11px;
+    color: #434343;
+    
+}
+
+
+ul.actions {
+    list-style-type: none;
+    display: flex;
+    padding: 0px;
+}
+
+li a {
+    background-repeat: no-repeat !important;
+    background-position: center center;
+    background-size: contain;
+    display: block;
+    width: 17px;
+    height: 17px;
+    white-space: nowrap;
+    text-indent: 9999px;
+    overflow: hidden;		
+    background-color: #B0383A;
+    margin-left:10px;
+    
+}
+
+li a.share {
+    background: url(/static/share.svg);
+}
+
+li a.open {
+    background: url(/static/open.svg);
+}
+
+li a.download {
+    background:url(/static/download.svg)
+}
+
+
+.card-thumb{
+    margin:-23px 0 0 0px;
+    background-color: rgba(81,81,81,1.00);
+    width: 150px;
+    height: 211px;
+    background-color: #EBB804;
+    box-shadow: 0 2px 20px 0 rgba(0,0,0,0.45);
+}
+
+
+/*---------------right side of card-------------*/
+
+.card-right {
+    margin: 10px 15px;
+    
+}
+
+
+
+h2.title {
+    font-family: 'Playfair Display', serif;
+    font-size: 18px;
+    color: rgba(51,51,51,1.00);
+    height: 88px;
+    line-height: 120%;
+    margin-top: 5px;
+    overflow: hidden;
+    height: 4.7em;
+    
+}
+
+.line_4 {
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 4;
+    display: -webkit-box;
+    overflow: hidden;
+}
+
+h2.title {
+    text-overflow: "[..]";
+}
+
+
+
+.themes {
+    font-family: 'Lato', sans-serif;
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    color:rgba(255,185,0,1);
+    margin-bottom: 0px;
+    height: 14px;
+    overflow: hidden;
+}
+
+.themes.grey {
+    color:#636363;
+}
+
+.border-grey {
+    border-top:4px solid #636363;
+}
+
+.report_by {
+    font-family: 'Lato', sans-serif;
+    font-size: 12px;
+    color: rgba(51,51,51,1.00);
+    margin-bottom: 15px;
+    height: 30px;
+    display: block;
+
+}
+
+.organisation {
+    font-family: 'Lato', sans-serif;
+    font-size: 12px;
+    color: rgba(51,51,51,0.6);
+    
+    height: 15px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.tags{
+    font-family: 'Lato', sans-serif;
+    font-size: 11px;
+    font-style: italic;
+    color: rgba(51,51,51,0.6);
+    margin-top: 14px;
+    
+}
+
+
+
+/*----------------this is list view------*/
+
+.list-container {
+    max-width: 1200px;
+    
+}
+
+
+.list-container .card {
+    background-color: #fff;
+    box-shadow: 0 2px 20px 0 rgba(0,0,0,0.05);
+    -webkit-transition:  box-shadow .7s ease-out;
+    border: 1px solid #f0f0f0;
+    border-left:4px solid rgba(255,185,0,1);
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    overflow: hidden;
+    grid-column-gap: 20px;
+    padding: 15px 30px;
+    margin-bottom: 20px;
+    min-height: auto;
+    
+}
+
+.list-container > .card .card-left  {
+    order:1;
+    height: auto;
+    margin: 0;
+    
+}
+
+.list-container > .card .card-left .card-thumb {
+    display: none;
+    
+    
+}
+
+.list-container > .card .card-right {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    align-items: center;
+    margin: 0;
+    grid-column-gap: 30px
+    
+    
+}
+
+.list-container > .card .card-right .themes {
+    display: none;
+
+}
+
+.list-container > .card .card-right .title {
+    height: auto;
+
+}
+
+.list-container > .tags {
+    
+    margin-top:0;
+    
+}
+
+.list-container > .card-right .organisation {
+    
+    height: 40px;
+    
+}
+
+.list-container > .report_by {
+    
+    margin-bottom:0px;
+    
+}
+
+    
+
+
+
+
+/*-----------------MEDIA QUERIES--------*/
+
+@media only screen and (min-width : 220px) and (max-width : 480px) {
+
+.grid-container {
+        margin: 10px;
+    grid-gap: 30px 10px;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+        
+    }
+    
+    .card {
+        display: flex;
+        flex-direction: column-reverse;
+        min-height: auto;
+        padding: 5px;
+        
+    }
+    
+    .card-left{
+        margin-top: 0px;
+        height: auto;
+        width: 92%;
+    }
+    
+    .title {
+        height: auto;
+        
+    }
+    .organisation {
+        margin-bottom: 5px;
+    }
+    
+    .card-thumb {
+        display: none;
+    }
+
+    .list-container {
+        display: none;
+    }
+}
+
+@media only screen and (min-width : 480px) and (max-width : 768px) {
+
+    .grid-container {
+        margin: 10px;
+    grid-gap: 25px;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        
+    }
+    
+    .card {
+        display: flex;
+        flex-direction: column-reverse;
+        height: auto;
+        padding: 5px;
+        
+    }
+    
+    .card-left{
+        margin-top: 0px;
+        height: auto;
+        width: 90%;
+    }
+    
+    .title {
+        max-height: 85px;
+        
+    }
+    .organisation {
+        margin-bottom: 8px;
+        height: 30px;
+    }
+    
+    .card-thumb {
+        display: none;
+    }
+
+    .list-container {
+        display: none;
+    }
+    
+    
+    
+}
+
+@media only screen and (min-width : 768px) and (max-width : 1024px) {
+
+    
+    .list-container > .card .card-right {
+    
+    grid-template-columns:2fr 1fr 1fr;
+    overflow: hidden;
+}
+    
+    .title {
+        height: auto;
+    }
+    
+    .card > .tags, .organisation {
+        
+    }
+    
+
+}
