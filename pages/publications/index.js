@@ -21,7 +21,7 @@ const suffix = (
 
 function fetcher(path, query, themes, sectors) {
     console.log("query", query)
-    const url = "http://159.89.174.236"+path
+    const url = "https://search.wedroneu.in"+path
     console.log("FETCHING", url, query)
     let facetFilters = []
     if (themes.length) {
