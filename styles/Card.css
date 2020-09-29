@@ -18,7 +18,6 @@
 .card {
     
     background-color: #fff;
-    /*width: 420px;*/
     min-height: 250px;
      
     box-shadow: 0 2px 20px 0 rgba(0,0,0,0.05);
@@ -65,7 +64,7 @@ ul.actions {
     padding: 0px;
 }
 
-li a {
+.card li a {
     background-repeat: no-repeat !important;
     background-position: center center;
     background-size: contain;

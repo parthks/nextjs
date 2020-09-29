@@ -1,0 +1,21 @@
+.footer_div {
+    background-color: gray;
+    height: 200px;
+}
+
+.navbar_div {
+    height: 116px;
+    background-color:#003764;
+    display: flex;
+    justify-content: space-between;
+    padding: 30px
+}
+
+.navbar_logo {
+
+}
+
+
+.navbar_div h1 {
+    color: white
+}

@@ -1,0 +1,189 @@
+.section_report_lists{
+	h3{
+		font: 19px; //$font3;
+		color: #000000;
+		padding:20px 0;;
+	}
+	.actions{
+		// margin:0;
+		// padding:0;
+		display: flex;
+		// flex: 1;
+		margin: 16px 0;
+		li{
+			display:inline-block;
+			padding:0;
+			list-style:none;
+			flex: 1;
+			position:relative;
+			a{
+				background-repeat: no-repeat;
+				background-position: center center;
+				background-size: contain;
+				display: block;
+				width: 17px;
+				height: 17px;
+				white-space: nowrap;
+				text-indent: 9999px;
+				overflow: hidden;
+			}
+
+			&:hover{
+				.social_share{
+					display:block;
+				}
+
+			}
+			
+
+			.social_share{
+				position:absolute;
+				bottom:0;
+				right:0;
+				margin: 0;
+				padding: 0;
+				bottom: 30px;
+				display:none;
+				background:#fff;
+				padding:10px;
+				box-shadow:0px 0px 10px 0 rgba(0,0,0,0.5);
+				border-radius:2px;
+				z-index:999;
+				padding-bottom: 0px;
+
+
+				left: 0px;
+				width: 40px;
+				bottom: 10px;
+				
+				li{
+					flex:none;
+					height: 29px;
+					width: 25px;
+					a{
+						display: inline-block;
+						text-indent:0px;
+						width:100%;
+						height:100%;
+						margin:0;
+						padding:0;
+
+						svg{
+							width: 1.5em;
+						}
+
+					}
+
+					&.fb{
+						svg{
+
+							color:#375895;
+						}
+
+					}
+
+					&.tw{
+						svg{
+
+							color:#58a9e8;
+						}
+
+					}
+
+					&.gp{
+						height: 21px;
+						svg{
+
+							color:#b8463a;
+						}
+
+					}
+					&.ln{
+						height: 26px;
+						svg{
+
+							color:#2977b5;
+						}
+
+					}
+				}
+			}
+		}
+		.share{
+			background-image: url(/share.svg);
+			
+		}
+		.open{
+			background-image: url(/open.svg);
+
+		}
+		.download{
+			background-image: url(/download.svg);
+
+		}
+	}
+
+	.report_paginate{
+		ul{
+
+			display:inline-block;
+			margin: 0;
+			padding: 0;
+			li{
+				display:inline-block;
+				list-style: none;
+				padding-right: 10px;
+				a{
+					color: #808080;
+					text-align: center;
+					width:40px;
+					height: 40px;
+					display: block;
+					border: 1px solid #808080;
+					// font-family: $font2;
+					vertical-align: middle;
+					// display: table-cell;
+					display: inline-block;
+					line-height:35px;
+				
+				
+				}
+				&.active a{
+					background: #666666;
+					color: #FFFFFF;
+				}
+			}
+		}
+	}
+}
+.section_report_list {
+	.item{
+
+		a{
+	
+			img{
+				transition:all ease-in-out 0.3s;
+			}
+		}
+		&:hover{
+			a{
+		
+				
+					img{
+			
+						box-shadow: 0 0px 5px 0 rgba(0,0,0,0.2);
+					}
+				
+			}
+
+		}
+	}
+}
+
+.date_time{
+	padding: 0 0 10px 0;
+    display: block;
+    font-family: Lato;
+    font-size: 11px;
+    color: #757575;
+}

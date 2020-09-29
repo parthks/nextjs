@@ -9,10 +9,14 @@
   },
   "dependencies": {
     "@ant-design/icons": "^4.2.2",
+    "@meilisearch/instant-meilisearch": "^0.2.2",
     "antd": "^4.6.3",
     "next": "^9.5.3",
+    "qs": "^6.9.4",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
+    "react-instantsearch-dom": "^6.7.0",
+    "sass": "^1.26.11",
     "storyblok-js-client": "^2.5.2",
     "swr": "^0.3.2"
   }

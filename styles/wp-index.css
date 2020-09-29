@@ -1,0 +1,687 @@
+.section_page .gform_wrapper .gform_footer input[type=submit], .gform_wrapper input:not([type=radio]):not([type=checkbox]):not([type=submit]):not([type=button]):not([type=image]):not([type=file]) { cursor: pointer; }
+
+.section_browse_by_theme .also-browse-by ul {
+    margin: 15px 0;
+}
+
+
+.section_browse_by_theme .also-browse-by section {
+    padding: 13px 25px 4px 25px;
+
+}
+
+
+.section_browse_by_theme .also-browse-by ul li {
+    padding: 5px 0;
+    margin-top: 15px;
+}
+
+
+.section_browse_by_theme .themes .theme-item article section p {
+    line-height: 130%;
+  font-weight:normal;
+  max-width:90%;
+}
+
+.section_browse_by_theme .themes .theme-item article section p {
+  font-family:'Open Sans', sans-serif;
+  font-size:14px !important;
+}
+
+
+
+.section_data_event .item section p {
+    font-weight: normal;
+    line-height: 130%;
+}
+
+.section_key_results h2 small {
+   margin-bottom: 15px;
+}
+
+
+.section_about_the_project h2 small {
+    margin-bottom: 15px;
+}
+
+.section_theme_banner article {
+    font-family: "Lato";
+    font-weight: 600;
+
+}
+
+
+.section_featured_reports .cycle_slider_pager ul li a {
+  font-family:"Lato";
+  text-shadow:none;
+}
+.section_featured_reports h4 a {
+  font-family:"Lato";
+  text-shadow:none;
+}
+
+
+.container {
+  /*
+  this is affecting event page. so commenting this line. by rajilesh
+  max-width:1200px;*/
+}
+
+.section_upcoming_events .item .btn, .section_featured_reports .cycle-slideshow .btn {
+  padding:6px 8px;
+  font-size:12px;
+}
+
+.section_upcoming_events .item figure img {
+  height:240px;
+}
+
+.section_upcoming_events .item .event_description {
+  font-family:'Lato', sans-serif !important;
+}
+
+.section_page h1::after {
+  content:"";
+}
+
+.section_search .selected_filters li a {
+  font-size:13px;
+}
+
+.tags {
+  margin-top:0 !important;
+}
+
+
+.tags, .organisation, .report_by, p.date { 
+  font-size:11px !important;
+  font-family:'Lato', sans-serif;
+  font-style:normal !important;
+  color:black !important;
+  opacity:.9 !important;
+  font-weight:500 !important;
+  
+}
+
+.section_page h1::after, .section_featured_reports h1::after, .section_upcoming_events h1::after, .section_page .gform_wrapper h3.gform_title:after {
+  content:"";
+}
+
+.section_about_the_project .collaborations .item p{
+margin:20px 0 10px 0 !important;
+}
+
+.section_data_event .item section p {
+  max-width:90%;
+}
+
+h2 {
+font-size: 25px;
+font-weight: bold;
+  
+}
+
+.section_past_events .item h3 {
+  overflow:visible;
+}
+
+.section_browse_by h3 {
+  font-size:24px;
+  margin-bottom:30px;
+}
+
+/*----for tablet---*/
+@media only screen and (min-width : 480px) and (max-width : 768px) {
+  
+  .section_explore .caption p {
+    padding:0 !important;
+  }
+  
+  
+}
+
+/*----REsponsive code here---*/
+
+
+/*end reponsive*/
+
+
+
+
+.section_theme_banner article {
+  font-weight:normal !important;
+}
+
+
+.section_theme_banner h1::after {
+  content:"";
+}
+
+.section_theme_banner article {
+  margin-bottom:50px;
+  font-size:26px;
+}
+
+.header .home_slider {
+  color:#191919;
+}
+
+[data-layout="layout_list"] .section_report_list .item {
+display:grid !important;
+  grid-template-columns:11fr 1fr !important;
+  border-top:none !important;
+  border-right:none !important;
+  border-bottom:none !important;
+}
+
+
+[data-layout="layout_list"] .report_right .organisation {
+  height:auto !important;
+}
+
+.section_featured_reports .cycle-slideshow .report_description {
+  font-family:'Lato', sans-serif !important;
+}
+
+.footer .menu2 li a {
+  font-size:14px !important;
+}
+
+.footer .gform_wrapper .ginput_container_email input {
+  margin-left:0 !important;
+  margin-top:-3px !important;
+}
+
+.footer-icon {
+  font-size:1.5rem;
+}
+
+.section_featured_reports h3 {
+  height:109px !important;
+}
+
+.header .navbar-expand-lg .navbar-nav a.nav-link {
+  font-family:'Playfair Display' !important;
+}
+
+.section_browse_by_theme .themes .theme-item figure img {
+  opacity:0.8;
+}
+
+
+
+/**IE related fixes***/
+
+[data-layout="layout_grid"] .section_report_list {
+  display: -ms-grid !important;
+  
+}
+
+.section_report_list .item {
+    box-shadow: 0 2px 20px 0 rgba(0,0,0,0.05);
+  -webkit-box-shadow: 0 2px 20px 0 rgba(0,0,0,0.05);
+  display: -ms-flexbox;
+  box-orient: horizontal;
+    -webkit-box-direction: normal;
+    transition: box-shadow .7s ease-out;
+  -webkit-transition: box-shadow .7s ease-out;
+}
+
+.section_browse_by_theme .also-browse-by ul li {
+    padding: 19px 0;
+  
+		padding: 5px 0;
+}
+.section_browse_by_theme .also-browse-by ul li img {
+    width: 50px;
+}
+
+
+
+/*------------CUSTOM CSS VENKY- 17-08-2019----------*/
+
+.section_report_list img.card-thumb {
+  border-radius:7px !important;
+}
+
+
+.item.type_multimedia h2.title, .item.type_blog h2.title {
+  height:50px !important;
+}
+
+  .blog_block .section_report_list .item .report_right p {
+    font-size:12px !important;
+}
+
+.blog_block .section_report_list .item {
+  border:0.5px solid #F2F2F2 !important;
+}
+
+.item.type_multimedia .item.type_blog {
+  
+  border-radius:5px;
+}
+
+.section_report_list .item {
+  box-shadow:0px 0px 8px 0 rgba(0,0,0,0.05) !important;
+}
+
+.section_report_lists .report_paginate ul li a {
+  background-color:#f7f7f7 !important;
+  border:0px !important;
+  border-radius:5px;
+}
+
+.section_report_lists .report_paginate ul li.active a {
+  background-color:#086A8F !important;
+}
+
+.section_report_lists h3 {
+  padding:65px 0 20px 0 !important;
+}
+
+/*---------Publications-----*/
+.card-thumb {
+  box-shadow:0 0px 20px 0 rgba(0,0,0,0.15) !important;
+}
+
+/*---------related blog--*/
+
+.blog_block .section_report_lists h2.main_title {
+  padding-left:0px !important;
+  margin-bottom:25px !important;
+}
+
+
+
+/*-------general--*/
+
+.btn-default {
+  background-color:#e9e9e9 !important;
+  padding:12px 20px;
+  border:0px !important;
+  border-radius:5px;
+  text-transform:capitalize !important;
+  color:#575757 !important;
+  text-transform:uppercase !important;
+}
+
+
+
+.btn-default:hover {
+  background-color:#086A8F !important;
+  color:white !important;
+}
+
+.section_search .selected_filters li {
+  border-radius:5px;
+}
+
+.section_search .filter_search {
+  border-radius:5px;
+  border:0px !important;
+  padding:10px 16px !important;
+  font-size:13px;
+ 
+}
+
+.section_search .search_fields input[type="submit"] {
+  border:none;
+  border-radius:5px;
+  background-color:#086A8F;
+}
+
+
+
+
+/*--blog page--*/
+.c2w_embeded {
+  margin:20px 0px 50px 0;
+}
+
+
+.c2w_embeded p {
+  font-size:24px;
+  line-height:1.6;
+  margin-bottom:20px;
+}
+
+.section_blog h1 {
+  font-size:45px !important;
+}
+
+.post_content p {
+  font-size:18px;
+  line-height:1.6;
+  color:black;
+  opacity:.5;
+}
+
+.blog_bg {
+  background-color:black;
+  /* background:url('/wp-content/uploads/2020/04/blog_bg.jpg'); */
+  background-position:center;
+}
+
+.blog_bg h1, .multimedia_bg h1 {
+  color:white;
+  font-size:45px;
+}
+
+.multimedia_bg {
+  background-color:black;
+  /* background:url('/wp-content/uploads/2020/04/multimedia_bg.jpg'); */
+  background-position:center;
+}
+
+
+  
+
+/*--------search suggestions----*/
+.section_search .search-suggestion h4 {
+  font-family:'Roboto', sans-serif;
+}
+
+
+
+/*------------events----*/
+.section_past_events .item .item_right {
+  padding:30px !important;
+}
+
+
+/*-------------new changes after 05-09-2019----------*/
+.blog_block .section_report_list .item .report_right p {
+  height:auto !important;
+}
+
+
+
+
+/*....12-04-2020...*/
+
+.founding-partner {
+  text-align:center; 
+  margin-bottom:30px;
+}
+
+.post_content p {
+  opacity:1 !important;
+}
+
+.section_browse_by_theme .themes .theme-item figure img {
+  opacity:1 !important;
+}
+
+.type_multimedia .report_left .meta p.date {
+  display:none !important;
+}
+
+.type_blog .report_left .meta p.date {
+  display:none !important;
+}
+
+.section_browse_by_theme .also-browse-by ul {
+  display:flex !important;
+  margin: 0 0 15px !important;
+}
+.section_browse_by_theme .also-browse-by ul li {
+  margin-top:10px !important;
+  
+}
+
+.section_browse_by_theme .also-browse-by ul li img {
+  margin-right:0px !important;
+  margin-bottom:5px !important;
+  height:30px !important;
+  
+}
+
+.also-browse-by ul li a {
+  text-align:center !important;
+}
+
+.section_data_event {
+  padding:0 !important;
+}
+
+.section_data_event .item figure img {
+  width:160% !important;
+}
+
+
+
+
+/*initiative section*/
+
+.section_initiative_banner {
+  padding:100px 0 0 0;
+  margin-bottom:-25px;
+  background-size:contain;
+}
+
+.section_initiative_banner p{
+  color:white;
+  font-size:20px;
+  
+}
+
+.section_initiative_banner h1{
+  color:grey;
+  font-size:45px;
+  font-weight:bold;
+}
+
+.section_initiative_banner article {
+    margin: 25px 0;
+    font-size: 26px;
+  font-family: "Lato";
+}
+
+.section_initiative_banner .theme_btn {
+    color: white;
+    font-family: "Lato";
+    border: 2px solid #fff;
+  margin:20px 0;
+    padding-left: 15px;
+    padding-right: 10px;
+    border-radius: 0;
+    text-transform: uppercase;
+    font-size: 14px;
+}
+
+.wwge-logo-container {
+  display:flex;
+  flex-wrap: wrap;
+  justify-content:space-around;
+  align-items:center;
+}
+
+.wwge-logo-container a img {
+  max-height:150px;
+  padding:25px;
+  max-width:350px;
+}
+
+.project-bg {
+			
+	background-color: white;
+			
+  width:100vw;
+
+  position: relative;
+  left: 50%;
+  right: 50%;
+  margin-left: -50vw;
+  margin-right: -50vw;
+		}
+
+.project {
+			padding: 40px 20px 0 20px;
+  
+		}
+
+.project h3 {
+  font-size:16px;
+  font-weight:500 !important;
+  color:black;
+}
+
+.project p {
+  font-size:14px;
+  opacity:.8;
+  color:black;
+}
+
+.project p small {
+  line-height:.8;
+  color:black;
+  font-style:italic;
+  font-size:14px;
+}
+
+ul.bullet {
+  list-style-type:disc;
+  margin-left:20px;
+}
+
+ul.bullet li {
+  color:white;
+  font-size:20px;
+}
+
+
+/* Initiative banner */
+
+.wwgebanner {
+  /* background-image:url('wp-content/uploads/2020/04/Women_Work-Banner-Image-1-copy.jpg'); */
+  background-size:cover;
+  background-repeat:no-repeat;
+}
+
+.covidbanner{
+  /* background-image:url('/wp-content/uploads/2020/04/ANTI-COVID-19-Screensaver3-lowres.jpg'); */
+  background-size:cover;
+  background-repeat:no-repeat;
+  
+}
+
+.initiative-banner {
+  background-color:black;
+  border-radius:15px;
+
+  padding:15px;
+  
+}
+
+.initiative-banner h4 {
+	color:#FFF !important;
+}
+
+.initiative-banner p {
+  color: #666666;
+    font-family: "Lato";
+    font-size:14px;
+}
+
+/* About page */
+
+.founding-logo-container {
+  margin-top:20px;
+  display:grid;
+  grid-template-columns: 1fr 1fr 1fr;
+}
+
+.affiliate-logo-container {
+  margin-top:20px;
+  display:grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+}
+
+.founding-logo-container img {
+  display:block;
+  margin:0 auto;
+  margin-top:60px;
+  align-self:start;
+}
+
+.affiliate-logo-container img {
+  max-height:75px;
+  
+  display:block;
+  margin:0 auto;
+  margin-top:60px;
+}
+
+/*----for upto tablet---*/
+@media only screen and (max-width : 768px) {
+  [data-layout="layout_grid"] .section_report_list .report_left{
+    margin:0px;
+    padding: 0 10px;
+  }
+  
+    .founding-logo-container img {
+    max-height:90px !important;
+}
+  
+    .affiliate-logo-container {
+  grid-template-columns: 1fr 1fr !important;
+}
+  
+    .section_data_event .item figure img {
+  width:100% !important;
+}
+  
+}
+.header .rev_slider .tp-caption.rev-btn {
+  border:0px solid #000 !important;
+  min-width:130px !important;
+  
+}
+/*----for mobile portrait---*/
+@media only screen and (min-device-width: 320px) and (max-device-width: 480px) {
+    .founding-logo-container {
+  margin-top:20px;
+  display:block !important;
+  
+}
+  .founding-logo-container img {
+    max-width:320px !important;
+    
+}
+  
+  .affiliate-logo-container {
+  display:block !important;
+}
+  
+  .section_browse_by .btn {
+    float:right !important;
+  }
+  
+  .section_data_event .item figure img {
+  width:100% !important;
+}
+}
+
+/*--end mobile--*/
+@media (min-width: 786px) {
+  .reports_data[data-layout="layout_grid"] .section_report_list {
+    width:100% !important;
+    margin:0 auto !important;
+  
+}
+  
+}
+
+.wwge-btn {
+  margin-top:10px;
+  color:white;
+  background-color:#086a8f;
+  padding:10px;
+  border-radius:5px;
+}
+
+.wwge-btn:hover {
+  color:white;
+  background-color:#045d7e;
+}
