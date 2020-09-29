@@ -9,7 +9,7 @@ import Layout from '../../components/layout'
 
 
 import { Typography } from 'antd';
-import { Row, Col, Button, Select, Spin } from 'antd';
+import { Row, Col, Button, Select, Spin, Slider } from 'antd';
 
 
 import {capitalize} from '../../lib/helpers'
@@ -22,7 +22,7 @@ import { InstantSearch, SearchBox,
     CurrentRefinements,
     ClearRefinements,
     RefinementList,
-    Configure, connectHits, connectStateResults, connectScrollTo, connectRefinementList } from 'react-instantsearch-dom';
+    Configure, connectHits, connectStateResults, connectScrollTo, connectRefinementList, connectCurrentRefinements } from 'react-instantsearch-dom';
 
 import instantMeiliSearch from '@meilisearch/instant-meilisearch';
 import {PublicationCard} from '../../components/cards'
@@ -241,7 +241,7 @@ function SearchAndFilteringStuff() {
             
         
         <Col span={24}>
-            <Row gutter={32}>
+            <Row gutter={[32, 16]}>
                 <Col xs={24} sm={12} md={8}>
                     <Panel header="Theme">
                         <RefinementList operator="and" attribute="theme" 
@@ -269,22 +269,21 @@ function SearchAndFilteringStuff() {
                         }} />
                     </Panel>
                 </Col>
-                <Col xs={24} sm={12} md={6}>
-                    <Panel header="Organization">
-                        <CustomOrgRefinementList operator="or" attribute="organisation" />
+                
+                <Col xs={24} sm={12} md={5}>
+                    <Panel header="Region">
+                        <CustomRefinementList operator="and" attribute="geo_region" />
                     </Panel>
                 </Col>
-                {/* <Col xs={24} sm={12} md={6}>
-                    <Panel header="Sector">
-                        <RefinementList operator="and" attribute="sector" transformItems={items => {
-                            // console.log("REFINEMENT SEARCH", items)
-                            return items.map(item => ({
-                            ...item,
-                            label: refineValue(item.label),
-                            }))
-                        }} />
+                <Col xs={24} sm={12} md={5}>
+                    <Panel header="Organization">
+                        <CustomRefinementList operator="and" attribute="organisation" />
+                    </Panel> <br />
+                    <Panel header="Date">
+                        <CustomRefinementSlider min={2003} max={2022} attribute={"pub_year"} />
                     </Panel>
-                </Col> */}
+                </Col>
+               
             </Row>
         </Col>
 
@@ -303,14 +302,17 @@ function SearchAndFilteringStuff() {
                 }} />
             </Col>
             <Col flex="auto">
-                <CurrentRefinements transformItems={(items) => {
+                <CustomCurrentRefinements />
+                {/* <CurrentRefinements transformItems={(items) => {
+                    console.log("CurrentRefinements ITEMS", items)
                     return items.map(item => ({
                         ...item,
-                        label: refineValue(item.label),
-                        items: item.items.map(attr => ({...attr, label: refineValue(attr.label)})),
+                        currentRefinement: item.attribute === "pub_year" ? [item.currentRefinement[0], item.currentRefinement[item.currentRefinement.length - 1] ] : item.currentRefinement,
+                        label: item.attribute === "pub_year" ? "Date" : refineValue(item.label),
+                        items: item.items?.map(attr => ({...attr, label: refineValue(attr.label)})),
                         // label: item.label.toUpperCase() + `🍔`,
                     }))
-                }} />
+                }} /> */}
             </Col>
         </Row>
 
@@ -403,7 +405,7 @@ class ScrollTo extends Component {
 
 
 
-  const OrganizationRefinementSelect = ({items, refine, createURL, currentRefinement}) => {
+const RefinementListSelectDropdown = ({items, refine, createURL, currentRefinement}) => {
 
     // const [currentValues, setCurrentValues] = useState(currentRefinement)
     const [openState, setOpenState] = useState(false)
@@ -450,10 +452,10 @@ class ScrollTo extends Component {
     //     setOptionItems(options)
     // }
 
-    console.log("GOT ITEMS", items, optionItems, Object.values(optionItems))
+    // console.log("GOT ITEMS", items, optionItems, Object.values(optionItems))
 
     const handleChange = (newValues) => {
-        console.log("VALUES SELECTED", newValues)
+        // console.log("VALUES SELECTED", newValues)
         refine(newValues)
         // setCurrentValues(newValue.map(arr => arr[0]))
         // const newCurrentValues = newValue.map(arr => arr[0])
@@ -463,7 +465,7 @@ class ScrollTo extends Component {
     }
 
     const handleSelect = (newValue, option) => {
-        console.log("SELECT HANDLE", newValue, option)
+        // console.log("SELECT HANDLE", newValue, option)
         // refine(newValue)
         // createURL(newValue)
         setOpenState(false)
@@ -471,7 +473,7 @@ class ScrollTo extends Component {
     }
 
     const handleDeselect = (newValue, option) => {
-        console.log("DESELECT HANDLE", newValue, option)
+        // console.log("DESELECT HANDLE", newValue, option)
         // refine(newValue)
         // createURL(newValue)
         ref.current.blur()
@@ -485,8 +487,8 @@ class ScrollTo extends Component {
     //     console.log("ITEM VALUE", item)
     //     return [refineValue(item.value[0] ?? "")] }
     // )
-    console.log("currentRefinement", currentRefinement)
-    const currentValue = currentRefinement.map(v => [refineValue( typeof v === 'object' ? v[0] : v)])
+    // console.log("currentRefinement", currentRefinement)
+    const currentValue = currentRefinement.map(v => typeof v === 'object' ? v[0] : v)
 
     // console.log("ITEMS", items);
     
@@ -511,7 +513,7 @@ class ScrollTo extends Component {
         optionLabelProp="label"
     >
 
-        {Object.values(optionItems).map(item => item.count > 0 ? <Option key={item.value} label={refineValue(item.value)} >{refineValue(item.value)} ({item.count})</Option> : '')}
+        {Object.values(optionItems).map(item => item.count > 0 ? <Option key={item.value} value={item.value} label={refineValue(item.value)} >{refineValue(item.value)} ({item.count})</Option> : '')}
 
         {/* {items.map(item => item.count > 0 ? <Option key={item.value} label={refineValue(item.label)} >{refineValue(item.label)} ({item.count})</Option> : '')} */}
         
@@ -522,4 +524,182 @@ class ScrollTo extends Component {
     </Select>
 
   }
-  const CustomOrgRefinementList = connectRefinementList(OrganizationRefinementSelect);
+const CustomRefinementList = connectRefinementList(RefinementListSelectDropdown);
+
+
+
+
+
+
+// const RangeSlider = ({min, max, refine, currentRefinement, testing}) => {
+//     console.log("SLIDER", min, max, currentRefinement, testing)
+
+//     const handleChange = (valuesArray) => {
+//         refine({min: valuesArray[0], max: valuesArray[1]})
+//     }
+//     const marks = {
+//         2003: 2003,
+//         2022: 2022
+//     }
+//     return <Slider min={min} max={max} range marks={marks} value={[currentRefinement["min"] ?? min, currentRefinement["max"] ?? max]} onChange={handleChange} />
+// };
+
+// const CustomRangeSlider = connectRange(RangeSlider);
+
+
+
+
+
+
+const RefinementListSlider = ({items, refine, currentRefinement, min, max}) => {
+    
+
+    const handleChange = (newValues) => {
+        // console.log("VALUES SELECTED", newValues)
+        const start = newValues[0] ?? min
+        const end = newValues[1] ?? max
+
+        const values = []
+        for(let i = start; i <= end; i++) {
+            values.push(i)
+        }
+        refine(values)
+
+    }
+
+
+    // const currentValue = currentRefinement.map(v => typeof v === 'object' ? v[0] : v)
+    // console.log("SLIDER VALUE", currentRefinement)
+  
+    const marks = {
+        2003: 2003,
+        2022: 2022
+    }
+
+    items.forEach(item => {
+        console.log("SLIDER", item)
+        if (item.count > 0) {marks[parseInt(item.label)] = ""}
+    })
+
+    return <Slider min={min} max={max}
+    range marks={marks}
+    defaultValue={[min, max]}
+    value={[currentRefinement[0] ?? min, currentRefinement[currentRefinement.length - 1] ?? max]} 
+    onChange={handleChange} />
+
+
+  }
+  const CustomRefinementSlider = connectRefinementList(RefinementListSlider);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  const CurrentRefinementsCustomComponent = ({ items, refine }) => {
+      const [removePubYears, setRemovePubYears] = useState(false)
+
+      
+      const refineResetPubYear = (item) => {
+          let currentRefinementFunctions = []
+          if (item.clearValues) {
+              currentRefinementFunctions = item.clearValues
+          } else {
+            currentRefinementFunctions = item.items.map(item => item.value)
+          }
+            console.log("RESET", currentRefinementFunctions)
+            //refine(currentRefinementFunctions)
+            currentRefinementFunctions.forEach(year => refine(year))
+      }
+
+      if (removePubYears) {
+        let found = false;
+        for(let i = 0; i < items.length; i++) {
+          if (items[i].attribute === "pub_year") {
+              found = true
+              console.log("ITEM PUB YEAR", items[i])
+              refineResetPubYear(items[i])
+          }
+        }
+        if (!found) {
+          setRemovePubYears(false)
+        }
+    }
+
+
+    return <ul className="ais-CurrentRefinements-list">
+      {items.map(item => {
+          
+          let label = null
+          console.log("REFINEMENT ITEM", item)
+          if (item.attribute === "pub_year") {label = "Date: "}
+          else if (item.attribute === "geo_region") {label = "Region: "}
+          else {label = refineValue(item.label);}
+
+
+          if (item.attribute === "pub_year" ) {
+            // item.value = `${item.currentRefinement[0]} - ${item.currentRefinement[item.currentRefinement.length - 1]}`
+            if (!item.clearValues) {
+                const clearValueFunctions = item.items.map(item => item.value)
+                item.clearValues = clearValueFunctions
+            }
+            
+            item.items = [{
+                label: `${item.currentRefinement[0]} - ${item.currentRefinement[item.currentRefinement.length - 1]}`, 
+                value: "pub_year_special", 
+            }]
+            
+          }
+
+            
+        return <li className="ais-CurrentRefinements-item" key={label}>
+          {item.items ? (
+            <React.Fragment>
+              
+                <span className="ais-CurrentRefinements-label">
+                    {label}
+                </span>
+                
+                {item.items.map(nested => {
+                    console.log("NESTED ITEMS", nested)
+                    return <span key={nested.label} className="ais-CurrentRefinements-category">
+                        <span class="ais-CurrentRefinements-categoryLabel">
+                            {refineValue(nested.label)}
+                        </span>
+                        <button onClick={() => nested.value === "pub_year_special" ? setRemovePubYears(true) : refine(nested.value)} className="ais-CurrentRefinements-delete">✕</button>
+                    </span>
+
+              
+                } )}
+            </React.Fragment>
+          ) : (
+            <span key={label} className="ais-CurrentRefinements-category">
+                <span class="ais-CurrentRefinements-categoryLabel">
+                    {label}
+                </span>
+                <button onClick={() => refine(item.value)} class="ais-CurrentRefinements-delete">✕</button>
+            </span>
+            
+          )}
+        </li>
+      })}
+          
+    </ul>
+  };
+
+const CustomCurrentRefinements = connectCurrentRefinements(CurrentRefinementsCustomComponent);

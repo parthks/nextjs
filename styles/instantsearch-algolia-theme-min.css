@@ -334,7 +334,7 @@ a[class^='ais-'] {
 
 .ais-CurrentRefinements-item {
   margin-right: 0.3rem;
-  margin-top: 0.3rem;
+  /* margin-top: 0.3rem; */
   padding: 0.3rem 0.5rem;
   display: -webkit-box;
   display: -ms-flexbox;
@@ -350,7 +350,8 @@ a[class^='ais-'] {
   display: flex; }
 
 .ais-CurrentRefinements-delete {
-  margin-left: 0.3rem; }
+  margin-left: 0.3rem;
+  outline: none; }
 
 .ais-CurrentRefinements-label,
 .ais-CurrentRefinements-categoryLabel,
