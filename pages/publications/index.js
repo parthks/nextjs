@@ -64,7 +64,7 @@ function SlideshowCard({data}) {
             </figure>
         </Col>
         <Col xs={24} sm={24} md={14}>
-            <h4 style={{color: cardColor}}><a href="https://connected2work.org/themes/platform-economy/">{themeNames}</a></h4>
+            <h4 style={{color: cardColor}}>{themeNames}</h4>
             <h3>{data.title}</h3>
             <p className="report_by">by {authorsNames}</p>
             <p className="report_date">{data.pub_month} {data.pub_year}</p>
@@ -86,7 +86,7 @@ function SlideshowThumb({active, changeSlide, data}) {
     })
 
     return <li onClick={changeSlide} style={{"color": cardColor}} className={active ? "cycle-pager-active" : ''}>
-    <a href={"#"/*https://connected2work.org/themes/platform-economy/*/}>{themeNames}</a>
+    {themeNames}
         <h2>{data.title}</h2>
     </li>
 }
@@ -402,12 +402,12 @@ function SearchAndFilteringStuff() {
                 
                 <Col xs={24} sm={12} md={5}>
                     <Panel header="Region">
-                        <CustomRefinementList limit={100} operator="and" attribute="geo_region" />
+                        <CustomRefinementList limit={10} operator="and" attribute="geo_region" />
                     </Panel>
                 </Col>
                 <Col xs={24} sm={12} md={5}>
                     <Panel header="Organization">
-                        <CustomRefinementList limit={200} operator="and" attribute="organizations" />
+                        <CustomRefinementList limit={10} operator="and" attribute="organizations" />
                     </Panel> <br />
                     <Panel header="Date">
                         <CustomRefinementSlider min={2003} max={2022} attribute={"pub_year"} />
@@ -790,7 +790,7 @@ const RefinementListSlider = ({items, refine, currentRefinement, min, max}) => {
       {items.map(item => {
           
           let label = null
-          console.log("REFINEMENT ITEM", item)
+        //   console.log("REFINEMENT ITEM", item)
           if (item.attribute === "pub_year") {label = "Date: "}
           else if (item.attribute === "geo_region") {label = "Region: "}
           else {label = refineValue(item.label);}
@@ -820,9 +820,9 @@ const RefinementListSlider = ({items, refine, currentRefinement, min, max}) => {
                 </span>
                 
                 {item.items.map(nested => {
-                    console.log("NESTED ITEMS", nested)
+                    // console.log("NESTED ITEMS", nested)
                     return <span key={nested.label} className="ais-CurrentRefinements-category">
-                        <span class="ais-CurrentRefinements-categoryLabel">
+                        <span className="ais-CurrentRefinements-categoryLabel">
                             {refineValue(nested.label)}
                         </span>
                         <button onClick={() => nested.value === "pub_year_special" ? setRemovePubYears(true) : refine(nested.value)} className="ais-CurrentRefinements-delete">✕</button>
@@ -833,10 +833,10 @@ const RefinementListSlider = ({items, refine, currentRefinement, min, max}) => {
             </React.Fragment>
           ) : (
             <span key={label} className="ais-CurrentRefinements-category">
-                <span class="ais-CurrentRefinements-categoryLabel">
+                <span className="ais-CurrentRefinements-categoryLabel">
                     {label}
                 </span>
-                <button onClick={() => refine(item.value)} class="ais-CurrentRefinements-delete">✕</button>
+                <button onClick={() => refine(item.value)} className="ais-CurrentRefinements-delete">✕</button>
             </span>
             
           )}

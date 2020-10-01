@@ -37,14 +37,14 @@ export function PublicationCard({ content }) {
     
         // console.log("HIT", content)
 
-        
+        const cardColor = themesToColor(content["themes"])
     
     const authorsNames = content["authors"]?.map( (v, i) => {
         return <a key={i} href="#">{v + "" + (i !== content["authors"].length-1 ? ", " : "")}</a>
     })
 
     const themeNames = content["themes"]?.map( (v, i) => {
-        return <a key={i} href="#">{correctThemeName(v) + "" + (i !== content["themes"].length-1 ? ", " : "")}</a>
+        return <a style={{"color": cardColor}} key={i} href="#">{correctThemeName(v) + "" + (i !== content["themes"].length-1 ? ", " : "")}</a>
     })
 
     const organizationNames = content["organizations"]?.map( (v, i) => {
@@ -57,7 +57,7 @@ export function PublicationCard({ content }) {
 
 
     
-       const cardColor = themesToColor(content["themes"])
+       
     
 
     return <div className="item" style={{"borderColor": cardColor}}>
@@ -94,11 +94,9 @@ export function PublicationCard({ content }) {
         </div >
         <div className="report_right">
             <div className="themes line_2">
-                <a href={"#"}
-                // href="https://connected2work.org/themes/technology-and-work/"
-                style={{"color": cardColor}}>
+                
                     {themeNames}
-                </a>
+                
             </div>
             <h2 className="title line_4"><a href={content["host_url"]} target="_blank">
                 {content["title"]}
