@@ -14,7 +14,7 @@ export default function MyLayout({children}) {
     return <div>
     <NavBar />
 
-    <Layout>
+    <Layout style={{background: '#fff'}}>
 
       <Layout style={{ padding: '0' }}>
 

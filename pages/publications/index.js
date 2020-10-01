@@ -1,7 +1,8 @@
 import Link from 'next/link'
 import {Component, useState, useRef} from 'react'
 
-// import {getFeaturedPublications} from '../../lib/publications'
+import {getFeaturedPublications} from '../../lib/publications'
+import {themesToColor, correctThemeName} from '../../components/cards'
 
 import styles from '../../styles/Publications.module.css'
 
@@ -9,7 +10,7 @@ import Layout from '../../components/layout'
 
 
 import { Typography } from 'antd';
-import { Row, Col, Button, Select, Spin, Slider } from 'antd';
+import { Row, Col, Button, Select, Spin, Slider, Carousel } from 'antd';
 
 
 import {capitalize} from '../../lib/helpers'
@@ -29,18 +30,124 @@ import {PublicationCard} from '../../components/cards'
 
 
 
+// import { Carousel } from 'react-responsive-carousel';
+
 
 const { Title } = Typography;
 const { Option } = Select;
 
 
-export default function Publications() {
+function SlideshowCard({data}) {
+    // let cardColor = "rgb(204, 204, 204)"
+    const cardColor = themesToColor(data["themes"])
+    const authorsNames = data["authors"]?.map( (v, i) => {
+        return <a key={i} href="#">{v + "" + (i !== data["authors"].length-1 ? ", " : "")}</a>
+    })
+
+    const themeNames = data["themes"]?.map( (v, i) => {
+        return <a key={i} href="#">{correctThemeName(v) + "" + (i !== data["themes"].length-1 ? ", " : "")}</a>
+    })
+
+    const organizationNames = data["organizations"]?.map( (v, i) => {
+        return <a key={i} href="#">{v + "" + (i !== data["organizations"].length-1 ? ", " : "")}</a>
+    })
+
+    const tagNames = data["tags"]?.map( (v, i) => {
+        return <a key={i} href="#">{v + "" + (i !== data["tags"].length-1 ? ", " : "")}</a>
+    })
+
+
+    return <Row gutter={32} className="cycle-slide cycle-sentinel" style={{position: "static", top: "0px", left: "0px", zIndex: 100, opacity: 1, textAlign: 'left'}}>
+        <Col xs={24} sm={24} md={10}>
+            <figure>
+                <img src={data.post_thumbnail} style={{"background": cardColor, width: '100%'}} alt="" />
+            </figure>
+        </Col>
+        <Col xs={24} sm={24} md={14}>
+            <h4 style={{color: cardColor}}><a href="https://connected2work.org/themes/platform-economy/">{themeNames}</a></h4>
+            <h3>{data.title}</h3>
+            <p className="report_by">by {authorsNames}</p>
+            <p className="report_date">{data.pub_month} {data.pub_year}</p>
+            <p className="report_description">{data.description}</p>
+            <p className="report_tags">{tagNames}</p>
+            <a href={data.host_url} target="_blank" className="btn">download </a>
+            <a href={data.organization_url} target="_blank" className="open">Open</a>
+        </Col>
+    </Row>
+}
+
+function SlideshowThumb({active, changeSlide, data}) {
+    // let cardColor = "rgb(204, 204, 204)"
+
+    const cardColor = themesToColor(data["themes"])
+
+    const themeNames = data["themes"]?.map( (v, i) => {
+        return <a key={i} href="#">{correctThemeName(v) + "" + (i !== data["themes"].length-1 ? ", " : "")}</a>
+    })
+
+    return <li onClick={changeSlide} style={{"color": cardColor}} className={active ? "cycle-pager-active" : ''}>
+    <a href={"#"/*https://connected2work.org/themes/platform-economy/*/}>{themeNames}</a>
+        <h2>{data.title}</h2>
+    </li>
+}
+
+function PublicationSlideshow({data}) {
+    const [index, setIndex] = useState(0)
+    const ref = useRef(null)
+
+    const slideChanged = (from, toIndex) => {
+        // console.log(toIndex)
+        setIndex(toIndex)
+    }
+
+    const changeSlideToIndex = (index) => {
+        // console.log("CHANGE", index)
+        ref.current.goTo(index)
+    }
+
+    const slideshowCards = data.map(publication => <SlideshowCard key={publication.id} data={publication} />)
+    const slideshowThumbs = data.map((publication, i) => <SlideshowThumb key={publication.id} 
+        changeSlide={() => changeSlideToIndex(i)} active={index === i}
+        data={publication} />)
+
+    return <div>
+        <Row gutter={[8,32]}>
+        <Col className="cycle-slideshow" xs={{span: 22, offset: 1}} sm={{span: 22, offset: 1}} md={{span: 12, offset: 2}} lg={{span: 14, offset: 0}}>
+        <a onClick={(e) => {
+            e.preventDefault()
+            ref.current.prev()
+        }} href="#" className="cycle-controls cycle-prev slick-arrow">Prev</a>
+        
+            <Carousel autoplay={true} ref={ref} dots={false} effect="fade" beforeChange={slideChanged}>
+                    
+
+            {slideshowCards}
+                        
+                        
+            </Carousel>
+        <a onClick={(e) => {
+            e.preventDefault()
+            ref.current.next()
+        }} href="#" className="cycle-controls cycle-next slick-arrow">Next</a>
+        </Col>
+        <Col className={"cycle_slider_pager"} xs={24} sm={24} md={{span: 8, offset: 2}}>
+            {slideshowThumbs}
+        </Col>
+        </Row>
+    </div>
+}
+
+
+export default function Publications({featuredPublications}) {
+    
     return <Layout>
 
         <div className="section_featured_reports" style={{padding: '50px 0px 100px'}}>
             <div className="container">
                 <Title>Publications</Title>
                 <Title level={2}>Featured Publications</Title>
+                <PublicationSlideshow data={featuredPublications} />
+                
             </div>
         </div>
         
@@ -101,18 +208,41 @@ export default function Publications() {
 
 export async function getStaticProps() {
     // const featured = await getFeaturedPublications()
-
+    const featured = await getFeaturedPublications()
+    // console.log("FEATURED", featured)
     return {
         props: {
-            // featuredPublications: featured,
+            featuredPublications: featured,
         }
       }
 }
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 const DEBOUNCE_TIME = 400;
-const RESULTS_PER_PAGE = 3
+const RESULTS_PER_PAGE = 9
 
 const searchClient = instantMeiliSearch(
     "https://search.wedroneu.in",
@@ -170,7 +300,7 @@ function SearchAndFilteringStuff() {
         onSearchStateChange={onSearchStateChange}
         createURL={createURL}
     >   
-        <Configure hitsPerPage={3} />
+        <Configure hitsPerPage={RESULTS_PER_PAGE} />
 
         <div className="section_search">
         <div className="container">
@@ -244,7 +374,7 @@ function SearchAndFilteringStuff() {
             <Row gutter={[32, 16]}>
                 <Col xs={24} sm={12} md={8}>
                     <Panel header="Theme">
-                        <RefinementList operator="and" attribute="theme" 
+                        <RefinementList operator="and" attribute="themes" 
                         transformItems={items => {
                             // console.log("REFINEMENT SEARCH", items)
                             return items.map(item => {
@@ -272,12 +402,12 @@ function SearchAndFilteringStuff() {
                 
                 <Col xs={24} sm={12} md={5}>
                     <Panel header="Region">
-                        <CustomRefinementList operator="and" attribute="geo_region" />
+                        <CustomRefinementList limit={100} operator="and" attribute="geo_region" />
                     </Panel>
                 </Col>
                 <Col xs={24} sm={12} md={5}>
                     <Panel header="Organization">
-                        <CustomRefinementList operator="and" attribute="organisation" />
+                        <CustomRefinementList limit={200} operator="and" attribute="organizations" />
                     </Panel> <br />
                     <Panel header="Date">
                         <CustomRefinementSlider min={2003} max={2022} attribute={"pub_year"} />
@@ -342,7 +472,7 @@ function SearchAndFilteringStuff() {
 
 function Hit(props) {
     // console.log("HIT", props)
-    return <PublicationCard key={props.hit.id} story={props.hit} />;
+    return <PublicationCard key={props.hit.id} content={props.hit} />;
 }
 
 const Hits = ({ hits }) => {
@@ -365,11 +495,13 @@ const StateStatsResults = ({searchState, searchResults, isSearchStalled}) => {
     // console.log("searchState", searchState)
     const hasResults = searchResults && searchResults.nbHits !== 0;
     const nbHits = searchResults && searchResults.nbHits;
-    const page = searchState.page
+    const page = searchState.page ?? 1
     //searchState.configure?.hitsPerPage
 
     const startingCount = (page-1)*RESULTS_PER_PAGE + 1
     const endingCount = startingCount + RESULTS_PER_PAGE - 1 > nbHits ? nbHits : startingCount + RESULTS_PER_PAGE - 1
+
+    // console.log("STATS", page, nbHits, startingCount, endingCount)
 
     return <div style={{padding: '30px 0px'}}>
             
@@ -416,6 +548,18 @@ const RefinementListSelectDropdown = ({items, refine, createURL, currentRefineme
 
     const [optionItems, setOptionItems] = useState({})
 
+    const itemLabels = items.map(item => item.label)
+
+    Object.values(optionItems).forEach(element => {
+        if (itemLabels.indexOf(element.value) === -1 && element.count !== 0) {
+            setOptionItems({
+                ...optionItems,
+                [element.value]: {
+                    "value": element.value,
+                    "count": 0},
+            })
+        } 
+    });
 
     items.forEach(element => {
         if (optionItems[element.label]) {
@@ -577,7 +721,7 @@ const RefinementListSlider = ({items, refine, currentRefinement, min, max}) => {
     }
 
     items.forEach(item => {
-        console.log("SLIDER", item)
+        // console.log("SLIDER", item)
         if (item.count > 0) {marks[parseInt(item.label)] = ""}
     })
 

@@ -17,7 +17,9 @@ a {
   box-sizing: border-box;
 }
 
-
+.ant-layout {
+  background: #ffffff;
+}
 
 .column-checkboxes .ant-checkbox-group-item {
   display: block;
