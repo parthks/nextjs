@@ -1,5 +1,7 @@
 import Link from 'next/link'
-import {Component, useState, useRef} from 'react'
+import Head from 'next/head'
+
+import {Component, useState, useRef, useEffect} from 'react'
 
 import {getFeaturedPublications} from '../../lib/publications'
 import {themesToColor, correctThemeName} from '../../components/cards'
@@ -141,6 +143,15 @@ function PublicationSlideshow({data}) {
 export default function Publications({featuredPublications}) {
     
     return <Layout>
+        <Head>
+            {/* <!-- Global site tag (gtag.js) - Google Analytics --> */}
+            <script async src="https://www.googletagmanager.com/gtag/js?id=G-N5TJT8HFTZ"></script>
+            <script dangerouslySetInnerHTML={{ __html: `window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+
+            gtag('config', 'G-N5TJT8HFTZ');` }} />
+        </Head>
 
         <div className="section_featured_reports" style={{padding: '50px 0px 100px'}}>
             <div className="container">
@@ -304,7 +315,6 @@ function SearchAndFilteringStuff() {
 
         <div className="section_search">
         <div className="container">
-
         <Row>
             <Col xs={24} sm={24} md={16} lg={18}>
                 <Title level={2}>Search for reports, authors and subjects discussed</Title>
@@ -402,12 +412,12 @@ function SearchAndFilteringStuff() {
                 
                 <Col xs={24} sm={12} md={5}>
                     <Panel header="Region">
-                        <CustomRefinementList limit={10} operator="and" attribute="geo_region" />
+                        <CustomRefinementList limit={100} operator="and" attribute="geo_region" />
                     </Panel>
                 </Col>
                 <Col xs={24} sm={12} md={5}>
                     <Panel header="Organization">
-                        <CustomRefinementList limit={10} operator="and" attribute="organizations" />
+                        <CustomRefinementList limit={200} operator="and" attribute="organizations" />
                     </Panel> <br />
                     <Panel header="Date">
                         <CustomRefinementSlider min={2003} max={2022} attribute={"pub_year"} />
@@ -544,26 +554,36 @@ const RefinementListSelectDropdown = ({items, refine, createURL, currentRefineme
     const ref = useRef(null);
 
 
-    
-
     const [optionItems, setOptionItems] = useState({})
 
+    
     const itemLabels = items.map(item => item.label)
+    const itemCounts = items.map(item => item.count)
 
-    Object.values(optionItems).forEach(element => {
-        if (itemLabels.indexOf(element.value) === -1 && element.count !== 0) {
-            setOptionItems({
-                ...optionItems,
-                [element.value]: {
-                    "value": element.value,
-                    "count": 0},
-            })
-        } 
-    });
-
-    items.forEach(element => {
-        if (optionItems[element.label]) {
-            if (optionItems[element.label].count !== element.count) {
+    useEffect(() => {
+        
+        Object.values(optionItems).forEach(element => {
+            if (itemLabels.indexOf(element.value) === -1 && element.count !== 0) {
+                setOptionItems({
+                    ...optionItems,
+                    [element.value]: {
+                        "value": element.value,
+                        "count": 0},
+                })
+            } 
+        });
+    
+        items.forEach(element => {
+            if (optionItems[element.label]) {
+                if (optionItems[element.label].count !== element.count) {
+                    setOptionItems({
+                        ...optionItems,
+                        [element.label]: {
+                            "value": element.label,
+                            "count": element.count},
+                    })
+                }
+            } else {
                 setOptionItems({
                     ...optionItems,
                     [element.label]: {
@@ -571,30 +591,13 @@ const RefinementListSelectDropdown = ({items, refine, createURL, currentRefineme
                         "count": element.count},
                 })
             }
-        } else {
-            setOptionItems({
-                ...optionItems,
-                [element.label]: {
-                    "value": element.label,
-                    "count": element.count},
-            })
-        }
-        // options[element.value] = {
-        //     "value": element.value[0] ?? "",
-        //     "count": element.count
-        // }
-    });
+      
+        });
+    }, [itemLabels, itemCounts])
 
-    // if (items.length !== Object.values(optionItems).length) {
-    //     const options = {...optionItems}
-    //     items.forEach(element => {
-    //         options[element.value] = {
-    //             "value": element.value[0] ?? "",
-    //             "count": element.count
-    //         }
-    //     });
-    //     setOptionItems(options)
-    // }
+    
+
+    
 
     // console.log("GOT ITEMS", items, optionItems, Object.values(optionItems))
 
@@ -766,7 +769,7 @@ const RefinementListSlider = ({items, refine, currentRefinement, min, max}) => {
           } else {
             currentRefinementFunctions = item.items.map(item => item.value)
           }
-            console.log("RESET", currentRefinementFunctions)
+            // console.log("RESET", currentRefinementFunctions)
             //refine(currentRefinementFunctions)
             currentRefinementFunctions.forEach(year => refine(year))
       }
@@ -776,7 +779,7 @@ const RefinementListSlider = ({items, refine, currentRefinement, min, max}) => {
         for(let i = 0; i < items.length; i++) {
           if (items[i].attribute === "pub_year") {
               found = true
-              console.log("ITEM PUB YEAR", items[i])
+            //   console.log("ITEM PUB YEAR", items[i])
               refineResetPubYear(items[i])
           }
         }
