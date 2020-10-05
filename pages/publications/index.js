@@ -288,6 +288,13 @@ function SearchAndFilteringStuff() {
     const onSearchStateChange = updatedSearchState => {
     clearTimeout(debouncedSetState);
     if (typeof window !== 'undefined') {
+        
+        if (updatedSearchState.query) {
+            // console.log("SEARCH STATEEE", updatedSearchState)
+            gtag('event', 'search', {
+                search_term: updatedSearchState.query
+            });
+        }
         setDebouncedSetState(
             setTimeout(() => {
             // console.log("PUSHING STATEEE", updatedSearchState, searchStateToUrl(updatedSearchState))
