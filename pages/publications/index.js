@@ -291,8 +291,9 @@ function SearchAndFilteringStuff() {
         
         if (updatedSearchState.query) {
             // console.log("SEARCH STATEEE", updatedSearchState)
-            gtag('event', 'search', {
-                search_term: updatedSearchState.query
+            gtag('event', 'publication_search', {
+                event_category: "engagement",
+                event_label: updatedSearchState.query
             });
         }
         setDebouncedSetState(
