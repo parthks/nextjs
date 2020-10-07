@@ -147,12 +147,14 @@ export default function Publications({featuredPublications}) {
     return <Layout>
         <Head>
             {/* <!-- Global site tag (gtag.js) - Google Analytics --> */}
-            <script async src="https://www.googletagmanager.com/gtag/js?id=G-N5TJT8HFTZ"></script>
+            <script async src="https://www.googletagmanager.com/gtag/js?id=UA-103779767-3"></script>
             <script dangerouslySetInnerHTML={{ __html: `window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
+                function gtag(){dataLayer.push(arguments);}
+                gtag('js', new Date());
 
-            gtag('config', 'G-N5TJT8HFTZ');` }} />
+                gtag('config', 'UA-103779767-3');` 
+            
+            }} />
         </Head>
 
         <div className="section_featured_reports" style={{padding: '50px 0px 100px'}}>
@@ -301,7 +303,6 @@ function SearchAndFilteringStuff() {
             // console.log("SEARCH STATEEE", updatedSearchState)
             gtag('event', 'publication_search', {
                 event_label: updatedSearchState.query,
-                eventLabel: updatedSearchState.query
             });
             gtag('event', 'search', {
                 search_term: updatedSearchState.query
