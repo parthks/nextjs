@@ -3,6 +3,9 @@
 }
  */
 
+ .ais-ClearRefinements-button {
+   height: 30px;
+ }
 
 
 .ais-Breadcrumb-list,
@@ -344,7 +347,7 @@ a[class^='ais-'] {
   border-radius: 5px; }
 
 .ais-CurrentRefinements-category {
-  margin-left: 0.3em;
+  margin-left: 0.5em;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex; }

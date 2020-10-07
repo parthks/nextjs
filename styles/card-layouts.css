@@ -1,5 +1,10 @@
 
+/* a {
+    color: inherit;
+    text-decoration: none;
+  } */
 
+  
 [data-layout="layout_grid"] .section_report_list {
     display: grid;
     max-width: 100%;

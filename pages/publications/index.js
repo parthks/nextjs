@@ -141,6 +141,8 @@ function PublicationSlideshow({data}) {
 
 
 export default function Publications({featuredPublications}) {
+
+    
     
     return <Layout>
         <Head>
@@ -211,6 +213,8 @@ export default function Publications({featuredPublications}) {
 	</section>
 
 
+
+
     </Layout>
 }
 
@@ -224,7 +228,11 @@ export async function getStaticProps() {
     return {
         props: {
             featuredPublications: featured,
-        }
+        },
+        // Next.js will attempt to re-generate the page:
+        // - When a request comes in
+        // - At most once every second
+        revalidate: 300, // In seconds
       }
 }
 
@@ -292,8 +300,11 @@ function SearchAndFilteringStuff() {
         if (updatedSearchState.query) {
             // console.log("SEARCH STATEEE", updatedSearchState)
             gtag('event', 'publication_search', {
-                event_category: "engagement",
-                event_label: updatedSearchState.query
+                event_label: updatedSearchState.query,
+                eventLabel: updatedSearchState.query
+            });
+            gtag('event', 'search', {
+                search_term: updatedSearchState.query
             });
         }
         setDebouncedSetState(
@@ -311,6 +322,8 @@ function SearchAndFilteringStuff() {
 
     
     };
+
+
 
     return <InstantSearch
         indexName="publications"
@@ -392,7 +405,7 @@ function SearchAndFilteringStuff() {
             <Row gutter={[32, 16]}>
                 <Col xs={24} sm={12} md={8}>
                     <Panel header="Theme">
-                        <RefinementList operator="and" attribute="themes" 
+                        <CustomDefaultRefinementList operator="and" attribute="themes" 
                         transformItems={items => {
                             // console.log("REFINEMENT SEARCH", items)
                             return items.map(item => {
@@ -408,7 +421,7 @@ function SearchAndFilteringStuff() {
                 </Col>
                 <Col xs={24} sm={12} md={6}>
                     <Panel header="Sector">
-                        <RefinementList operator="and" attribute="sector" transformItems={items => {
+                        <CustomDefaultRefinementList operator="and" attribute="sector" transformItems={items => {
                             // console.log("REFINEMENT SEARCH", items)
                             return items.map(item => ({
                             ...item,
@@ -679,8 +692,36 @@ const RefinementListSelectDropdown = ({items, refine, createURL, currentRefineme
     </Select>
 
   }
+
+
+
+  const RefinementListCheckboxes = ({ items, refine }) => (
+    <ul className="ais-RefinementList-list">
+    {items.map(item => (
+      item.count !== 0 ? <li className={`ais-RefinementList-item ${item.isRefined ? "ais-RefinementList-item--selected" : ''}`} key={item.label}>
+        {/* <a
+          href="#"
+          style={{ fontWeight: item.isRefined ? 'bold' : '' }}
+          onClick={event => {
+            event.preventDefault();
+            refine(item.value);
+          }}
+        > */}
+            <input onClick={event => {
+            event.preventDefault();
+            refine(item.value);
+          }} class="ais-RefinementList-checkbox" type="checkbox" value={item.label} checked={item.isRefined} />
+            <span class="ais-RefinementList-labelText">{item.label}</span>
+            <span class="ais-RefinementList-count">({item.count})</span>
+        {/* </a> */}
+      </li> : null
+    ))}
+  </ul>
+  );
+
 const CustomRefinementList = connectRefinementList(RefinementListSelectDropdown);
 
+const CustomDefaultRefinementList = connectRefinementList(RefinementListCheckboxes);
 
 
 
@@ -707,7 +748,8 @@ const CustomRefinementList = connectRefinementList(RefinementListSelectDropdown)
 
 
 const RefinementListSlider = ({items, refine, currentRefinement, min, max}) => {
-    
+    const [minimumRecordedValue, setMinimumRecordedValue] = useState(2100)
+    const [maximumRecordedValue, setMaximumRecordedValue] = useState(0)
 
     const handleChange = (newValues) => {
         // console.log("VALUES SELECTED", newValues)
@@ -724,26 +766,54 @@ const RefinementListSlider = ({items, refine, currentRefinement, min, max}) => {
 
 
     // const currentValue = currentRefinement.map(v => typeof v === 'object' ? v[0] : v)
-    // console.log("SLIDER VALUE", currentRefinement)
+    // console.log("SLIDER VALUE", currentRefinement, currentRefinement[0], min, currentRefinement[currentRefinement.length - 1], max)
   
     const marks = {
-        2003: 2003,
-        2022: 2022
     }
 
+    let minValue = max//currentRefinement[0] ?? min
+    let maxValue = min//currentRefinement[currentRefinement.length - 1] ?? max
+
     items.forEach(item => {
+        const year = parseInt(item.label)
         // console.log("SLIDER", item)
-        if (item.count > 0) {marks[parseInt(item.label)] = ""}
+        // if (item.label === "2003" || item.label === "2022") {return}
+        if (item.count > 0) {
+            if (currentRefinement.length === 0 && year < minimumRecordedValue) {
+                setMinimumRecordedValue(year)
+            }
+            if (currentRefinement.length === 0 && year > maximumRecordedValue) {
+                setMaximumRecordedValue(year)
+            }
+            if (year < minValue) {
+                minValue = year
+            }
+            if (year > maxValue) {
+                maxValue = year
+            }
+            marks[year] = ""
+        }
     })
 
-    return <Slider min={min} max={max}
+
+
+    
+
+    marks[minValue] = minValue
+    marks[maxValue] = maxValue
+
+    
+
+
+    return <Slider min={currentRefinement.length ? minimumRecordedValue : minValue} max={currentRefinement.length ? maximumRecordedValue : maxValue}
     range marks={marks}
-    defaultValue={[min, max]}
-    value={[currentRefinement[0] ?? min, currentRefinement[currentRefinement.length - 1] ?? max]} 
+    // defaultValue={[min, max]}
+    value={[minValue, maxValue]} 
     onChange={handleChange} />
 
 
   }
+
   const CustomRefinementSlider = connectRefinementList(RefinementListSlider);
 
 
