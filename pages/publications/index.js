@@ -299,18 +299,20 @@ function SearchAndFilteringStuff() {
     clearTimeout(debouncedSetState);
     if (typeof window !== 'undefined') {
         
-        if (updatedSearchState.query) {
-            // console.log("SEARCH STATEEE", updatedSearchState)
-            gtag('event', 'publication_search', {
-                event_label: updatedSearchState.query,
-            });
-            gtag('event', 'search', {
-                search_term: updatedSearchState.query
-            });
-        }
         setDebouncedSetState(
             setTimeout(() => {
             // console.log("PUSHING STATEEE", updatedSearchState, searchStateToUrl(updatedSearchState))
+            if (updatedSearchState.query) {
+                // console.log("SEARCH STATEEE", updatedSearchState)
+                gtag('event', 'search', {
+                    event_category: "publication",
+                    event_label: updatedSearchState.query,
+                });
+                // gtag('event', 'search', {
+                //     search_term: updatedSearchState.query
+                // });
+            }
+
             history.pushState(
                 updatedSearchState,
                 null,
