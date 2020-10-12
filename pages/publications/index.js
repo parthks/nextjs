@@ -575,6 +575,10 @@ const RefinementListSelectDropdown = ({items, refine, createURL, currentRefineme
 
     // const [currentValues, setCurrentValues] = useState(currentRefinement)
     const [openState, setOpenState] = useState(false)
+
+    const [value, setValue] = useState("")
+
+
     const ref = useRef(null);
 
 
@@ -585,38 +589,44 @@ const RefinementListSelectDropdown = ({items, refine, createURL, currentRefineme
     const itemCounts = items.map(item => item.count)
 
     useEffect(() => {
+
+        // console.log("RefinementListSelectDropdown", itemLabels, itemCounts, optionItems)
+
+        const tempOptionItems = {...optionItems}
+        let change = false
         
         Object.values(optionItems).forEach(element => {
             if (itemLabels.indexOf(element.value) === -1 && element.count !== 0) {
-                setOptionItems({
-                    ...optionItems,
-                    [element.value]: {
-                        "value": element.value,
-                        "count": 0},
-                })
+
+                tempOptionItems[element.value] = {
+                    "value": element.value,
+                    "count": 0
+                }
+                if (optionItems[element.value]?.count !== 0) {
+                    change = true
+                }
             } 
         });
     
         items.forEach(element => {
-            if (optionItems[element.label]) {
-                if (optionItems[element.label].count !== element.count) {
-                    setOptionItems({
-                        ...optionItems,
-                        [element.label]: {
-                            "value": element.label,
-                            "count": element.count},
-                    })
-                }
-            } else {
-                setOptionItems({
-                    ...optionItems,
-                    [element.label]: {
-                        "value": element.label,
-                        "count": element.count},
-                })
+            if (optionItems[element.label]?.count !== element.count) {
+                change = true
             }
+            tempOptionItems[element.label] = {
+                "value": element.label,
+                "count": element.count
+            }
+
+
       
         });
+
+        if (change) { 
+            // console.log(optionItems, tempOptionItems)
+            setOptionItems(tempOptionItems) 
+        }
+        
+
     }, [itemLabels, itemCounts])
 
     
@@ -654,16 +664,18 @@ const RefinementListSelectDropdown = ({items, refine, createURL, currentRefineme
 
     
 
-    // const currentValue = items.filter(item => item.isRefined).map(item => {
-    //     console.log("ITEM VALUE", item)
-    //     return [refineValue(item.value[0] ?? "")] }
-    // )
-    // console.log("currentRefinement", currentRefinement)
-    const currentValue = currentRefinement.map(v => typeof v === 'object' ? v[0] : v)
+    useEffect(() => {
+        const currentValue = currentRefinement.map(v => typeof v === 'object' ? v[0] : v)
+
+        if (value !== currentValue) {
+            // console.log("SETTING SELECT VALUE", currentValue, value)
+            setValue(currentValue)
+        }
+    }, [currentRefinement])
 
     // console.log("ITEMS", items);
     
-    // console.log("CURRENT VALUE", currentValue)
+    // console.log("CURRENT VALUE", currentValue, items, optionItems)
 
     return <Select
         ref={ref}
@@ -672,8 +684,8 @@ const RefinementListSelectDropdown = ({items, refine, createURL, currentRefineme
         open={openState}
         onFocus={() => setOpenState(true)}
         onBlur={() => setOpenState(false)}
-    //   defaultValue={items.filter(item => item.isRefined).map(item => item.value)}
-        value={currentValue}
+        // defaultValue={items.filter(item => item.isRefined).map(item => item.label)}
+        value={value}
         showArrow
         allowClear
         style={{ width: '100%' }}
@@ -713,9 +725,9 @@ const RefinementListSelectDropdown = ({items, refine, createURL, currentRefineme
             <input onClick={event => {
             event.preventDefault();
             refine(item.value);
-          }} class="ais-RefinementList-checkbox" type="checkbox" value={item.label} checked={item.isRefined} />
-            <span class="ais-RefinementList-labelText">{item.label}</span>
-            <span class="ais-RefinementList-count">({item.count})</span>
+          }} className="ais-RefinementList-checkbox" type="checkbox" value={item.label} checked={item.isRefined} />
+            <span className="ais-RefinementList-labelText">{item.label}</span>
+            <span className="ais-RefinementList-count">({item.count})</span>
         {/* </a> */}
       </li> : null
     ))}
@@ -751,11 +763,18 @@ const CustomDefaultRefinementList = connectRefinementList(RefinementListCheckbox
 
 
 const RefinementListSlider = ({items, refine, currentRefinement, min, max}) => {
-    const [minimumRecordedValue, setMinimumRecordedValue] = useState(2100)
-    const [maximumRecordedValue, setMaximumRecordedValue] = useState(0)
+    const [minimumRecordedValue, setMinimumRecordedValue] = useState(min) // so that the min will be set based on count
+    const [maximumRecordedValue, setMaximumRecordedValue] = useState(max) // so that the max will be set based on count
+
+    const [minValueState, setMinValueState] = useState(max)
+    const [maxValueState, setMaxValueState] = useState(min)
+
+    const [marks, setMarks] = useState({})
 
     const handleChange = (newValues) => {
+        // const newValues = [2014, 2020]
         // console.log("VALUES SELECTED", newValues)
+
         const start = newValues[0] ?? min
         const end = newValues[1] ?? max
 
@@ -770,49 +789,159 @@ const RefinementListSlider = ({items, refine, currentRefinement, min, max}) => {
 
     // const currentValue = currentRefinement.map(v => typeof v === 'object' ? v[0] : v)
     // console.log("SLIDER VALUE", currentRefinement, currentRefinement[0], min, currentRefinement[currentRefinement.length - 1], max)
-  
-    const marks = {
-    }
+    
 
-    let minValue = max//currentRefinement[0] ?? min
-    let maxValue = min//currentRefinement[currentRefinement.length - 1] ?? max
+    const itemLabels = items.map(item => item.label)
+    const itemCounts = items.map(item => item.count)
 
-    items.forEach(item => {
-        const year = parseInt(item.label)
-        // console.log("SLIDER", item)
-        // if (item.label === "2003" || item.label === "2022") {return}
-        if (item.count > 0) {
-            if (currentRefinement.length === 0 && year < minimumRecordedValue) {
-                setMinimumRecordedValue(year)
+    useEffect(() => {
+
+        // let minValue = max//currentRefinement[0] ?? min
+        // let maxValue = min//currentRefinement[currentRefinement.length - 1] ?? max
+        // const tempMarks = {}
+
+        let tempMinValue = max
+        let tempMaxValue = min
+
+        let tempMinRecordedValue = minimumRecordedValue
+        let tempMaxRecordedValue = maximumRecordedValue
+
+        // console.log("CURRENT REFINEMENTS", currentRefinement, items)
+
+        items.forEach(item => {
+            const year = parseInt(item.label)
+            // console.log("SLIDER", item)
+            // if (item.label === "2003" || item.label === "2022") {return}
+            if (item.count > 0) {
+                // console.log("COUNT", item.count, "YEAR", year, minimumRecordedValue, maximumRecordedValue)
+                if (currentRefinement.length === 0 && year < tempMinRecordedValue) {
+                    tempMinRecordedValue = year
+                    
+                }
+                if (currentRefinement.length === 0 && year > tempMaxRecordedValue) {
+                    tempMaxRecordedValue = year
+                    
+                }
+                if (year < tempMinValue) {
+                    tempMinValue = year
+                }
+                if (year > tempMaxValue) {
+                    tempMaxValue = year
+                }
+                
+                // tempMarks[year] = ""
+                
+            } 
+        })
+
+        
+        if (tempMinRecordedValue === max && minimumRecordedValue !== tempMinValue) {
+            setMinimumRecordedValue(tempMinValue)
+        } else {
+            if (tempMinRecordedValue !== minimumRecordedValue) {
+                // console.log("UPDATE MIN RECORDED VALUE", tempMinRecordedValue, minimumRecordedValue)
+                setMinimumRecordedValue(tempMinRecordedValue)
             }
-            if (currentRefinement.length === 0 && year > maximumRecordedValue) {
-                setMaximumRecordedValue(year)
-            }
-            if (year < minValue) {
-                minValue = year
-            }
-            if (year > maxValue) {
-                maxValue = year
-            }
-            marks[year] = ""
         }
-    })
+
+        if (tempMaxRecordedValue === min && maximumRecordedValue !== tempMaxValue) {
+            setMaximumRecordedValue(tempMaxValue)
+        } else {
+            if (tempMaxRecordedValue !== maximumRecordedValue) {
+                // console.log("UPDATE MAX RECORDED VALUE", tempMaxRecordedValue, maximumRecordedValue)
+                setMaximumRecordedValue(tempMaxRecordedValue)
+            }
+        }
 
 
+
+
+        if (tempMinValue !== minValueState) {
+            // console.log("UPDATE MIN VALUE", tempMaxValue, maxValueState)
+            setMinValueState(tempMinValue)
+        }
+
+        if (tempMinValue === max && minValueState !== max) {setMinValueState(tempMinValue)}
+
+        if (tempMaxValue !== maxValueState) {
+            // console.log("UPDATE MAX VALUE", tempMaxValue, maxValueState)
+            setMaxValueState(tempMaxValue)
+        }
+
+        if (tempMaxValue === max && maxValueState !== min) {setMaxValueState(tempMaxValue)}
+
+
+        // tempMarks[tempMinValue] = tempMinValue
+        // tempMarks[tempMaxValue] = tempMaxValue
+        // if (!(Object.keys(tempMarks).length === Object.keys(marks).length && Object.keys(tempMarks).every(function(value, index) { return value === Object.keys(marks)[index]})) )
+        // { 
+        //     // console.log("UPDATE MARKS", tempMarks, marks)
+        //     setMarks(tempMarks) 
+        // }
+        
+
+    }, [itemLabels, itemCounts])
+
+
+
+    useEffect(() => {
+        if (currentRefinement.length === 0) {
+            if (minimumRecordedValue !== minValueState) {setMinimumRecordedValue(minValueState)}
+            if (maximumRecordedValue !== maxValueState) {setMaximumRecordedValue(maxValueState)}
+        }
+    }, [minValueState, maxValueState, currentRefinement])
+
+
+    useEffect(() => {
+
+        const tempMarks = {}
+
+        if (currentRefinement.length) {
+            tempMarks[minimumRecordedValue] = minimumRecordedValue
+            tempMarks[maximumRecordedValue] = maximumRecordedValue
+        } else {
+            tempMarks[minValueState] = minValueState
+            tempMarks[maxValueState] = maxValueState
+        }
+
+        if ((!(Object.keys(tempMarks).length === Object.keys(marks).length && Object.keys(tempMarks).every(function(value, index) { return value === Object.keys(marks)[index]})) )) {
+            setMarks(tempMarks)
+        }
+
+    }, [minValueState, maxValueState, minimumRecordedValue, maximumRecordedValue])
+
+
+
+    // useEffect(() => {
+    //     if (minValue !== minValueState) {setMinValueState(minValue)}
+    // }, [minValue])
+
+    // useEffect(() => {
+    //     if (maxValue !== maxValueState) {setMaxValueState(maxValue)}
+    // }, [maxValue])
+
+    // if (minimumRecordedValue === 0) {setMinimumRecordedValue(min)}
+    // if (maximumRecordedValue === 0) {setMaximumRecordedValue(max)}
+
+
+
+    if (minValueState === max && maxValueState === min) {return null}
 
     
 
-    marks[minValue] = minValue
-    marks[maxValue] = maxValue
+    // marks[minValue] = minValue
+    // marks[maxValue] = maxValue
+    // console.log("MARKS", marks)
+    // console.log(minValueState, maxValueState)
+    // console.log(minimumRecordedValue, maximumRecordedValue)
 
-    
 
-
-    return <Slider min={currentRefinement.length ? minimumRecordedValue : minValue} max={currentRefinement.length ? maximumRecordedValue : maxValue}
+    return <Slider min={currentRefinement.length ? minimumRecordedValue : minValueState} max={currentRefinement.length ? maximumRecordedValue : maxValueState}
     range marks={marks}
     // defaultValue={[min, max]}
-    value={[minValue, maxValue]} 
-    onChange={handleChange} />
+    value={[minValueState, maxValueState]} 
+    onChange={handleChange}
+    />
 
 
   }
