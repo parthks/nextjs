@@ -710,10 +710,24 @@ const RefinementListSelectDropdown = ({items, refine, createURL, currentRefineme
 
 
 
-  const RefinementListCheckboxes = ({ items, refine }) => (
-    <ul className="ais-RefinementList-list">
-    {items.map(item => (
-      item.count !== 0 ? <li className={`ais-RefinementList-item ${item.isRefined ? "ais-RefinementList-item--selected" : ''}`} key={item.label}>
+  const RefinementListCheckboxes = ({ items, refine }) => {
+    const sortedArray = sortRefinementsByLabel(items)
+    // console.log("sortedArray", sortedArray)
+    // var newItemsObject = {};
+
+    
+    // for (var i = 0; i < sortedArray.length; i++) {
+    //     var key = sortedArray[i][0];
+    //     var value = sortedArray[i][1];
+    //     newItemsObject[key] = value;
+    // }
+
+    // console.log("newItemsObject", newItemsObject)
+
+    return <ul className="ais-RefinementList-list">
+    {sortedArray.map(itemArray => {
+        const item = itemArray[1]
+      return item.count !== 0 ? <li className={`ais-RefinementList-item ${item.isRefined ? "ais-RefinementList-item--selected" : ''}`} key={item.label}>
         {/* <a
           href="#"
           style={{ fontWeight: item.isRefined ? 'bold' : '' }}
@@ -730,14 +744,31 @@ const RefinementListSelectDropdown = ({items, refine, createURL, currentRefineme
             <span className="ais-RefinementList-count">({item.count})</span>
         {/* </a> */}
       </li> : null
-    ))}
+  }
+  )}
   </ul>
-  );
+
+};
 
 const CustomRefinementList = connectRefinementList(RefinementListSelectDropdown);
 
 const CustomDefaultRefinementList = connectRefinementList(RefinementListCheckboxes);
 
+function sortRefinementsByLabel(obj) {
+    let sortable=[];
+	for(let key in obj)
+		if(obj.hasOwnProperty(key))
+			sortable.push([key, obj[key]]); // each item is an array in format [key, value]
+	
+	// sort items by value
+	sortable.sort(function(a, b)
+	{
+		let x=a[1]["label"].toLowerCase(),
+			y=b[1]["label"].toLowerCase();
+		return x<y ? -1 : x>y ? 1 : 0;
+	});
+	return sortable; // array in format [ [ key1, val1 ], [ key2, val2 ], ... ]
+}
 
 
 
